@@ -19,10 +19,11 @@ const pool = mariadb.createPool({
 
     host: "sql6.freesqldatabase.com",
     port: 3306,
-    user: "sql6699922",
-    password: "VcNcnsXkxd",
-    database: "sql6699922"
+    user: "sql6699935",
+    password: "X5HheFDdbx",
+    database: "sql6699935"
 });
+
 
 // Route for home page
 app.get("/", async (req, res) => {
