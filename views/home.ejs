@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <%- include('nav.ejs') %>
+    <div class="container">
+        <section class="hero">
+            <img src="hero.jpg" alt="Hero Image">
+        </section>
+        <h1>Course List</h1>
+        <a href="/add">Add New Course</a> 
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Course Code</th>
+                    <th>Course Name</th>
+                    <th>Syllabus</th>
+                    <th>Progression</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% courses.forEach(function(course) { %>
+                    <tr>
+                        <td><%= course.id %></td>
+                        <td><%= course.course_code %></td>
+                        <td><%= course.course_name %></td>
+                        <td><a href="<%= course.syllabus %>">Link</a></td>
+                        <td><%= course.progression %></td>
+                        <td><form action="/courses/<%= course.id %>?_method=DELETE" method="post"><button type="submit">Delete</button></form></td>
+                    </tr>
+                <% }); %>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
