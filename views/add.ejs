@@ -13,25 +13,26 @@
         <form action="/courses" method="post">
             <div>
                 <label for="courseCode">Course Code:</label>
-                <input type="text" id="courseCode" name="courseCode">
+                <input type="text" id="courseCode" name="courseCode" required>
             </div>
             <div>
                 <label for="courseName">Course Name:</label>
-                <input type="text" id="courseName" name="courseName">
+                <input type="text" id="courseName" name="courseName" required>
             </div>
             <div>
                 <label for="syllabus">Syllabus:</label>
-                <input type="text" id="syllabus" name="syllabus">
+                <input type="text" id="syllabus" name="syllabus" required>
             </div>
             <div>
                 <label for="progression">Progression:</label>
-                <select id="progression" name="progression">
+                <select id="progression" name="progression" required>
+                    <option value="">Select Progression</option>
                     <option value="A">A</option>
                     <option value="B">B</option>
                 </select>
             </div>
             <button type="submit">Add Course</button>
-        </form>
+        </form>        
     </div>
 </body>
 </html>

@@ -17,11 +17,12 @@ const pool = mariadb.createPool({
     // password: "",
     // database: "cv",
 
-    host: "sql6.freesqldatabase.com",
-    port: 3306,
-    user: "sql6699935",
-    password: "X5HheFDdbx",
-    database: "sql6699935"
+    host: "iyd.h.filess.io",
+    user: "cv_voicecave",
+    password: "dff1507662ee31fb0c3736e83203c2588fea0039",
+    port: 3305,
+    database: "cv_voicecave",
+
 });
 
 
@@ -57,9 +58,32 @@ app.get("/add", (req, res) => {
     res.render("add");
 });
 
+
 // Route for adding a new course
 app.post("/courses", async (req, res) => {
     const { courseCode, courseName, syllabus, progression } = req.body;
+    
+    // Check if any required field is empty
+    if (!courseCode || !courseName || !syllabus || !progression) {
+        return res.status(400).send("All fields are required");
+    }
+
+    // Additional validation
+    if (courseCode.length <= 2) {
+        return res.status(400).send("Course code should be more than two characters");
+    }
+
+    if (courseName.length <= 5) {
+        return res.status(400).send("Course name should be more than five characters");
+    }
+
+    // Validate syllabus as URL
+    try {
+        new URL(syllabus);
+    } catch (err) {
+        return res.status(400).send("Invalid syllabus URL");
+    }
+
     try {
         const conn = await pool.getConnection();
         await conn.query("INSERT INTO courses (course_code, course_name, syllabus, progression) VALUES (?, ?, ?, ?)", [courseCode, courseName, syllabus, progression]);
@@ -70,6 +94,8 @@ app.post("/courses", async (req, res) => {
         res.status(500).send("Internal Server Error");
     }
 });
+
+
 
 // Route for about page
 app.get("/about", (req, res) => {
