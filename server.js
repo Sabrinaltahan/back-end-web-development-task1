@@ -12,16 +12,17 @@ app.use(bodyParser.json());
 
 // Database connection configuration
 const pool = mariadb.createPool({
-    // host: "localhost",
-    // user: "root",
-    // password: "",
-    // database: "cv",
+    host: "emaarco.ch",
+    user: "cvdbuser",
+    password: "q!r2J84q6",
+    database: "emaarcocha_cvdb",
+    port: 3306
 
-    host: "iyd.h.filess.io",
-    user: "cv_voicecave",
-    password: "dff1507662ee31fb0c3736e83203c2588fea0039",
-    port: 3305,
-    database: "cv_voicecave",
+    // host: "iyd.h.filess.io",
+    // user: "cv_voicecave",
+    // password: "dff1507662ee31fb0c3736e83203c2588fea0039",
+    // port: 3305,
+    // database: "cv_voicecave",
 
 });
 
@@ -55,45 +56,59 @@ app.post("/courses/:id", async (req, res) => {
 
 // Route for rendering the add page
 app.get("/add", (req, res) => {
-    res.render("add");
+    res.render("add", { 
+        errors: [],
+        courseCode: "",
+        courseName: "",
+        syllabus: "",
+        progression: ""
+    });
 });
+
+
 
 
 // Route for adding a new course
 app.post("/courses", async (req, res) => {
     const { courseCode, courseName, syllabus, progression } = req.body;
-    
+    const errors = [];
+
     // Check if any required field is empty
     if (!courseCode || !courseName || !syllabus || !progression) {
-        return res.status(400).send("All fields are required");
+        errors.push("All fields are required");
     }
 
     // Additional validation
     if (courseCode.length <= 2) {
-        return res.status(400).send("Course code should be more than two characters");
+        errors.push("Course code should be more than two characters");
     }
 
     if (courseName.length <= 5) {
-        return res.status(400).send("Course name should be more than five characters");
+        errors.push("Course name should be more than five characters");
     }
 
     // Validate syllabus as URL
     try {
         new URL(syllabus);
     } catch (err) {
-        return res.status(400).send("Invalid syllabus URL");
+        errors.push("Invalid syllabus URL");
     }
 
-    try {
-        const conn = await pool.getConnection();
-        await conn.query("INSERT INTO courses (course_code, course_name, syllabus, progression) VALUES (?, ?, ?, ?)", [courseCode, courseName, syllabus, progression]);
-        conn.release();
-        res.redirect("/");
-    } catch (err) {
-        console.error("Error adding new course:", err);
-        res.status(500).send("Internal Server Error");
+    if (errors.length > 0) {
+        res.render("add", { errors, courseCode, courseName, syllabus, progression });
+    } else {
+        try {
+            const conn = await pool.getConnection();
+            await conn.query("INSERT INTO courses (course_code, course_name, syllabus, progression) VALUES (?, ?, ?, ?)", [courseCode, courseName, syllabus, progression]);
+            conn.release();
+            res.redirect("/");
+        } catch (err) {
+            console.error("Error adding new course:", err);
+            res.status(500).send("Internal Server Error");
+        }
     }
 });
+
 
 
 

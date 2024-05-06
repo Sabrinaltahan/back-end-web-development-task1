@@ -7,28 +7,35 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <%- include('nav.ejs') %>
+    <% include('nav.ejs') %>
     <div class="container">
         <h1>Add New Course</h1>
+        <% if (errors && errors.length > 0) { %>
+            <div class="error">
+                <% errors.forEach(error => { %>
+                    <p><%= error %></p>
+                <% }); %>
+            </div>
+        <% } %>
         <form action="/courses" method="post">
             <div>
                 <label for="courseCode">Course Code:</label>
-                <input type="text" id="courseCode" name="courseCode" required>
+                <input type="text" id="courseCode" name="courseCode" value="<%= courseCode ? courseCode : '' %>" required>
             </div>
             <div>
                 <label for="courseName">Course Name:</label>
-                <input type="text" id="courseName" name="courseName" required>
+                <input type="text" id="courseName" name="courseName" value="<%= courseName ? courseName : '' %>" required>
             </div>
             <div>
                 <label for="syllabus">Syllabus:</label>
-                <input type="text" id="syllabus" name="syllabus" required>
+                <input type="text" id="syllabus" name="syllabus" value="<%= syllabus ? syllabus : '' %>" required>
             </div>
             <div>
                 <label for="progression">Progression:</label>
                 <select id="progression" name="progression" required>
                     <option value="">Select Progression</option>
-                    <option value="A">A</option>
-                    <option value="B">B</option>
+                    <option value="A" <%= progression === 'A' ? 'selected' : '' %>>A</option>
+                    <option value="B" <%= progression === 'B' ? 'selected' : '' %>>B</option>
                 </select>
             </div>
             <button type="submit">Add Course</button>

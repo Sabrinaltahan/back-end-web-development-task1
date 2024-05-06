@@ -139,3 +139,17 @@ ol {
     margin-left: 20px;
     font-size: 18px;
 }
+
+
+.error {
+    background-color: #f8d7da; 
+    color: #721c24;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #f5c6cb;
+    border-radius: 5px;
+}
+
+.error p {
+    margin: 0;
+}
